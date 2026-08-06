@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SubnetCalc | Calculadora Profesional de Subredes IPv4 Online</title>
+<meta name="description" content="Calcula subredes IPv4 en segundos: dirección de red, broadcast, máscara, wildcard, hosts útiles y tabla de subredes completa. Herramienta gratuita para estudiantes y profesionales de redes.">
+<meta name="keywords" content="calculadora de subredes, subnetting, IPv4, CIDR, máscara de subred, calcular subred, VLSM, wildcard mask, redes, direccionamiento IP">
+<meta name="author" content="SubnetCalc">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sebas2540.github.io/Subnetcalc/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="SubnetCalc | Calculadora Profesional de Subredes IPv4">
+<meta property="og:description" content="Calcula subredes IPv4 en segundos: red, broadcast, máscara, wildcard, hosts útiles y tabla de subredes. Rápida, gratuita y sin registro.">
+<meta property="og:image" content="https://sebas2540.github.io/Subnetcalc/og-image.png">
+<meta property="og:url" content="https://sebas2540.github.io/Subnetcalc/">
+<meta property="og:site_name" content="SubnetCalc">
+<meta property="og:locale" content="es_ES">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.svg">
+<meta name="theme-color" content="#0a0e17">
+
+<!-- Preconnect & Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+<link rel="stylesheet" href="styles.css">
+
+<!-- Structured Data: WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SubnetCalc",
+  "url": "https://sebas2540.github.io/Subnetcalc/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (navegador web)",
+  "description": "Calculadora profesional de subredes IPv4: dirección de red, broadcast, máscara, wildcard, hosts útiles y tabla completa de subredes.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué es una subred?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Una subred es una división lógica de una red IP más grande en segmentos más pequeños, lo que permite organizar mejor los dispositivos, mejorar la seguridad y optimizar el uso de direcciones IP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es una máscara de subred?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La máscara de subred es un valor de 32 bits que indica qué parte de una dirección IP corresponde a la red y cuál al host, permitiendo determinar los límites de cada subred."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué significa el CIDR?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CIDR (Classless Inter-Domain Routing) es una notación que indica el número de bits de red de una dirección IP mediante un prefijo, por ejemplo /24, sustituyendo el antiguo sistema basado en clases."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo calcular una subred manualmente?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Se convierte la IP y la máscara a binario, se aplica un AND lógico para obtener la dirección de red, se calculan los bits de host disponibles y a partir de ahí se determinan el broadcast y el rango de IPs utilizables."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#inicio" class="logo" aria-label="SubnetCalc - Inicio">
+      <span class="logo-icon"><i class="fa-solid fa-diagram-project"></i></span>
+      <span class="logo-text">Subnet<span class="accent">Calc</span></span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Navegación principal">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#calculadora">Calculadora</a></li>
+        <li><a href="#tutorial">Tutorial</a></li>
+        <li><a href="#blog">Blog</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button id="nav-toggle" class="icon-btn nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Ad: Banner superior -->
+<div class="ad-slot ad-top container" aria-label="Espacio publicitario">
+  <span class="ad-label">Publicidad</span>
+  <div class="ad-placeholder">Espacio reservado para Google AdSense · 728x90</div>
+</div>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="inicio">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow"><i class="fa-solid fa-network-wired"></i> Herramienta gratuita de redes</p>
+        <h1>Calculadora Profesional de Subredes <span class="accent">IPv4</span></h1>
+        <p class="hero-desc">
+          Introduce una dirección IP y un prefijo CIDR y obtén al instante la red, el broadcast,
+          el rango de hosts útiles, las máscaras y la tabla completa de subredes. Pensada para
+          estudiantes, profesores y administradores de redes.
+        </p>
+        <div class="hero-actions">
+          <a href="#calculadora" class="btn btn-primary">
+            <i class="fa-solid fa-calculator"></i> Calcular Ahora
+          </a>
+          <a href="#tutorial" class="btn btn-ghost">
+            <i class="fa-solid fa-book-open"></i> Aprender subnetting
+          </a>
+        </div>
+        <ul class="hero-stats">
+          <li><strong>100%</strong><span>Gratuita</span></li>
+          <li><strong>/8–/30</strong><span>Rango CIDR</span></li>
+          <li><strong>0s</strong><span>Sin registro</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="terminal-card">
+          <div class="terminal-head">
+            <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+            <span class="terminal-title">subnetcalc.sh</span>
+          </div>
+          <div class="terminal-body">
+            <p><span class="t-prompt">$</span> subnetcalc 192.168.1.0/24</p>
+            <p class="t-line">Red&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="t-blue">192.168.1.0</span></p>
+            <p class="t-line">Máscara&nbsp;&nbsp;: <span class="t-cyan">255.255.255.0</span></p>
+            <p class="t-line">Broadcast&nbsp;: <span class="t-blue">192.168.1.255</span></p>
+            <p class="t-line">Hosts&nbsp;&nbsp;&nbsp;&nbsp;: <span class="t-green">254</span> útiles</p>
+            <p class="t-cursor">_</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CALCULADORA ============ -->
+  <section class="section calculator-section" id="calculadora">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Calculadora</p>
+        <h2>Calcula tu subred en segundos</h2>
+        <p class="section-desc">Ingresa una dirección IPv4 y selecciona el prefijo de red para obtener todos los datos de la subred.</p>
+      </div>
+
+      <div class="calc-layout">
+        <div class="calc-main">
+
+          <form id="subnet-form" class="calc-card" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="ip-address">Dirección IP</label>
+                <input type="text" id="ip-address" name="ip-address" class="input-mono" placeholder="192.168.1.0" inputmode="decimal" autocomplete="off" aria-describedby="ip-error">
+                <span class="field-error" id="ip-error" role="alert"></span>
+              </div>
+
+              <div class="field">
+                <label for="cidr-prefix">Prefijo CIDR</label>
+                <select id="cidr-prefix" name="cidr-prefix" class="input-mono">
+                  <!-- opciones /8 a /30 generadas también por JS por seguridad -->
+                </select>
+              </div>
+            </div>
+
+            <div class="field field-inline">
+              <label for="subnet-count">
+                Dividir en subredes de prefijo
+                <span class="field-hint">(opcional)</span>
+              </label>
+              <select id="subnet-count" name="subnet-count" class="input-mono">
+                <option value="">No dividir</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="calc-btn">
+                <i class="fa-solid fa-calculator"></i> Calcular
+              </button>
+              <button type="button" class="btn btn-ghost" id="clear-btn">
+                <i class="fa-solid fa-eraser"></i> Limpiar
+              </button>
+            </div>
+          </form>
+
+          <!-- Loader -->
+          <div class="loader-wrap" id="loader" hidden>
+            <div class="loader"></div>
+            <p>Calculando subred…</p>
+          </div>
+
+          <!-- Resultados -->
+          <div class="results-card" id="results" hidden aria-live="polite">
+            <div class="results-head">
+              <h3><i class="fa-solid fa-square-poll-vertical"></i> Resultados</h3>
+              <div class="results-tools">
+                <button type="button" class="icon-btn" id="copy-btn" title="Copiar resultados">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <button type="button" class="icon-btn" id="print-btn" title="Imprimir resultados">
+                  <i class="fa-solid fa-print"></i>
+                </button>
+                <button type="button" class="icon-btn" id="pdf-btn" title="Descargar en PDF">
+                  <i class="fa-solid fa-file-pdf"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="results-grid" id="results-grid"><!-- generado por JS --></div>
+
+            <div class="mask-visual">
+              <h4>Representación binaria de la máscara</h4>
+              <div class="mask-binary" id="mask-binary"><!-- generado por JS --></div>
+              <p class="mask-legend">
+                <span><i class="legend-dot legend-network"></i> Bits de red</span>
+                <span><i class="legend-dot legend-host"></i> Bits de host</span>
+              </p>
+            </div>
+
+            <div class="subnets-table-wrap" id="subnets-wrap" hidden>
+              <h4><i class="fa-solid fa-table-cells"></i> Tabla de subredes</h4>
+              <div class="table-scroll">
+                <table class="subnets-table" id="subnets-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Red</th>
+                      <th>1ª IP útil</th>
+                      <th>Última IP útil</th>
+                      <th>Broadcast</th>
+                      <th>Hosts útiles</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="results-empty" id="results-empty">
+            <i class="fa-solid fa-diagram-project"></i>
+            <p>Completa el formulario y presiona <strong>Calcular</strong> para ver los resultados de tu subred.</p>
+          </div>
+
+          <!-- Historial -->
+          <div class="history-card">
+            <div class="history-head">
+              <h3><i class="fa-solid fa-clock-rotate-left"></i> Historial reciente</h3>
+              <button type="button" class="link-btn" id="clear-history-btn">Borrar historial</button>
+            </div>
+            <ul class="history-list" id="history-list">
+              <li class="history-empty">Aún no has realizado ningún cálculo.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Ad: Banner lateral -->
+        <aside class="calc-side">
+          <div class="ad-slot ad-side" aria-label="Espacio publicitario">
+            <span class="ad-label">Publicidad</span>
+            <div class="ad-placeholder">Espacio reservado para Google AdSense · 300x600</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TUTORIAL / EDUCACIÓN ============ -->
+  <section class="section edu-section" id="tutorial">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Tutorial</p>
+        <h2>Fundamentos del subnetting</h2>
+        <p class="section-desc">Conceptos clave para entender cómo funcionan las subredes IPv4 antes de calcularlas.</p>
+      </div>
+
+      <div class="faq-grid">
+        <article class="faq-item">
+          <h3><i class="fa-solid fa-layer-group"></i> ¿Qué es una subred?</h3>
+          <p>Una <strong>subred</strong> (subnet) es una división lógica de una red IP más grande en segmentos más
+          pequeños y manejables. Dividir una red en subredes permite agrupar dispositivos por ubicación o
+          función, reducir el dominio de broadcast, mejorar el rendimiento y aplicar políticas de seguridad
+          independientes a cada segmento.</p>
+        </article>
+
+        <article class="faq-item">
+          <h3><i class="fa-solid fa-mask"></i> ¿Qué es una máscara de subred?</h3>
+          <p>La <strong>máscara de subred</strong> es un número de 32 bits que se compara con la dirección IP para
+          determinar qué parte identifica a la red y qué parte identifica al host. Los bits en 1 representan la
+          porción de red y los bits en 0 representan la porción de host disponible para direccionar equipos.</p>
+        </article>
+
+        <article class="faq-item">
+          <h3><i class="fa-solid fa-slash"></i> ¿Qué significa el CIDR?</h3>
+          <p><strong>CIDR</strong> (Classless Inter-Domain Routing) es la notación que expresa la máscara de subred
+          como un prefijo, por ejemplo <code>/24</code>, indicando cuántos bits desde la izquierda pertenecen a la
+          red. Reemplazó al antiguo sistema de clases A, B y C, permitiendo un uso mucho más eficiente del
+          espacio de direcciones IPv4.</p>
+        </article>
+
+        <article class="faq-item">
+          <h3><i class="fa-solid fa-calculator"></i> ¿Cómo calcular una subred?</h3>
+          <p>Para calcular una subred se convierte la IP y la máscara a binario, se aplica un <strong>AND lógico</strong>
+          para obtener la dirección de red, se identifican los bits de host restantes para calcular el total de
+          direcciones (2^n) y las direcciones útiles (2^n − 2), y finalmente se determina el broadcast invirtiendo
+          los bits de host a 1.</p>
+        </article>
+      </div>
+
+      <div class="steps-card">
+        <h3>Pasos para calcular una subred manualmente</h3>
+        <ol class="steps-list">
+          <li><span>Escribe la IP y la máscara en binario, octeto por octeto.</span></li>
+          <li><span>Aplica un AND lógico entre la IP y la máscara para obtener la dirección de red.</span></li>
+          <li><span>Cuenta los bits en 0 de la máscara: ese es el número de bits de host <code>n</code>.</span></li>
+          <li><span>El total de direcciones es 2<sup>n</sup> y los hosts útiles son 2<sup>n</sup> − 2.</span></li>
+          <li><span>Invierte los bits de host a 1 para obtener la dirección de broadcast.</span></li>
+          <li><span>La primera IP útil es red + 1 y la última es broadcast − 1.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ad: Banner entre artículos -->
+  <div class="ad-slot ad-mid container" aria-label="Espacio publicitario">
+    <span class="ad-label">Publicidad</span>
+    <div class="ad-placeholder">Espacio reservado para Google AdSense · 728x90</div>
+  </div>
+
+  <!-- ============ BLOG ============ -->
+  <section class="section blog-section" id="blog">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Blog</p>
+        <h2>Artículos sobre redes y direccionamiento IP</h2>
+        <p class="section-desc">Guías prácticas para entender subnetting, IPv4, IPv6</p>
+      </div>
+
+      <div class="blog-grid" id="blog-gird">
+
+        <article class="blog-card" data-article="a1">
+          <div class="blog-card-icon"><i class="fa-solid fa-network-wired"></i></div>
+          <p class="blog-tag">Subnetting</p>
+          <h3>Cómo calcular subredes paso a paso</h3>
+          <p class="blog-excerpt">Una guía práctica con ejemplos reales para dominar el cálculo de subredes IPv4
+          sin memorizar tablas, entendiendo la lógica binaria detrás de cada resultado.</p>
+          <button type="button" class="link-btn read-more-btn">Leer artículo completo <i class="fa-solid fa-arrow-right"></i></button>
+          <div class="blog-full" hidden>
+            <p>El cálculo de subredes parece complicado al principio, pero se resume en entender tres cosas: la
+            dirección IP, la máscara y la aritmética binaria. Cuando conviertes la IP y la máscara a binario y
+            aplicas un AND lógico, obtienes automáticamente la dirección de red; el resto es cuestión de contar
+            bits de host para saber cuántas direcciones caben en esa subred.</p>
+            <p>La práctica recomendada es empezar con ejemplos sencillos, como una red <code>/24</code>, y avanzar
+            poco a poco hacia prefijos menos intuitivos como <code>/27</code> o <code>/29</code>. Usar una
+            calculadora como SubnetCalc para verificar tus cálculos manuales es una excelente forma de reforzar
+            el aprendizaje sin depender de ella para resolver exámenes.</p>
+          </div>
+        </article>
+
+        <article class="blog-card" data-article="a2">
+          <div class="blog-card-icon"><i class="fa-solid fa-arrows-left-right"></i></div>
+          <p class="blog-tag">IPv4 vs IPv6</p>
+          <h3>Diferencias entre IPv4 e IPv6</h3>
+          <p class="blog-excerpt">IPv4 e IPv6 conviven hoy en la mayoría de las redes. Descubre en qué se
+          diferencian, por qué surgió IPv6 y qué implica esto para el subnetting.</p>
+          <button type="button" class="link-btn read-more-btn">Leer artículo completo <i class="fa-solid fa-arrow-right"></i></button>
+          <div class="blog-full" hidden>
+            <p>IPv4 utiliza direcciones de 32 bits, lo que limita el espacio total a poco más de cuatro mil
+            millones de combinaciones, un número insuficiente frente al crecimiento de dispositivos conectados.
+            IPv6, en cambio, usa direcciones de 128 bits, un espacio prácticamente inagotable para las
+            necesidades actuales y futuras de direccionamiento.</p>
+            <p>Además de la longitud, cambia la notación: IPv4 se escribe en cuatro octetos decimales separados
+            por puntos, mientras que IPv6 se representa en grupos hexadecimales separados por dos puntos. El
+            subnetting en IPv6 sigue una lógica similar basada en prefijos CIDR, aunque con bloques mucho más
+            grandes por diseño.</p>
+          </div>
+        </article>
+
+        <article class="blog-card" data-article="a3">
+          <div class="blog-card-icon"><i class="fa-solid fa-mask"></i></div>
+          <p class="blog-tag">Conceptos</p>
+          <h3>Qué es una máscara de red y para qué sirve</h3>
+          <p class="blog-excerpt">La máscara de red es la pieza clave que separa la parte de red de la parte de
+          host en cualquier dirección IP. Te explicamos cómo interpretarla correctamente.</p>
+          <button type="button" class="link-btn read-more-btn">Leer artículo completo <i class="fa-solid fa-arrow-right"></i></button>
+          <div class="blog-full" hidden>
+            <p>Cada dirección IPv4 va siempre acompañada de una máscara de red, aunque no siempre se muestre de
+            forma explícita. Esta máscara define, bit a bit, qué porción de la dirección identifica a la red a la
+            que pertenece el dispositivo y qué porción queda disponible para identificar hosts individuales
+            dentro de esa red.</p>
+            <p>Una máscara como <code>255.255.255.0</code> equivale a un prefijo <code>/24</code> y deja los
+            últimos 8 bits para hosts, lo que da 254 direcciones utilizables. Cuanto mayor es el número después de
+            la barra, más bits se destinan a la red y menos quedan disponibles para host, resultando en subredes
+            más pequeñas.</p>
+          </div>
+        </article>
+
+        <article class="blog-card" data-article="a4">
+          <div class="blog-card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <p class="blog-tag">Estudio</p>
+          <h3>Cómo aprobar Redes en la universidad</h3>
+          <p class="blog-excerpt">Consejos prácticos para dominar la materia de Redes de Computadoras, desde
+          subnetting hasta protocolos, sin morir en el intento.</p>
+          <button type="button" class="link-btn read-more-btn">Leer artículo completo <i class="fa-solid fa-arrow-right"></i></button>
+          <div class="blog-full" hidden>
+            <p>La materia de Redes suele evaluar tanto teoría de protocolos como ejercicios prácticos de
+            direccionamiento IP. La clave para aprobarla es practicar subnetting a mano, repetidamente, hasta que
+            el proceso de convertir a binario y calcular rangos se vuelva automático, en lugar de depender
+            únicamente de calculadoras.</p>
+            <p>También ayuda construir una tabla mental de las potencias de dos y sus máscaras equivalentes, ya
+            que la mayoría de los ejercicios de examen giran en torno a los mismos prefijos comunes. Combinar
+            esa práctica con herramientas como SubnetCalc para verificar resultados acelera mucho el aprendizaje.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Ad: Banner al final -->
+  <div class="ad-slot ad-bottom container" aria-label="Espacio publicitario">
+    <span class="ad-label">Publicidad</span>
+    <div class="ad-placeholder">Espacio reservado para Google AdSense · 728x90</div>
+  </div>
+
+</main>
+
+<!-- Toast de notificaciones -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="#inicio" class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-diagram-project"></i></span>
+        <span class="logo-text">Subnet<span class="accent">Calc</span></span>
+      </a>
+      <p>Calculadora de subredes IPv4 rápida, gratuita y sin registro para estudiantes y profesionales de redes.</p>
+      <div class="social-links">
+        <a href="#" aria-label="SubnetCalc en GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="#" aria-label="SubnetCalc en LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#calculadora">Calculadora</a></li>
+        <li><a href="#tutorial">Tutorial</a></li>
+        <li><a href="#blog">Blog</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <ul>
+        <li><a href="privacidad.html">Política de privacidad</a></li>
+        <li><a href="terminos.html">Términos y condiciones</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>&copy; <span id="year"></span> SubnetCalc. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="script.js" defer></script>
+</body>
+</html>
